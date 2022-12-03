@@ -63,16 +63,20 @@ def get_box(data, rowIndex, columnIndex):
         i+=1
     return oneBox
 
-def prelimSolve (dataPoint, row, column, box):
+def nakedSingle (row, column, box):
     possibleValues = []
     for value in range(1,10):
-        print("prelim value", value)
-        if value not in row and value not in column and value not in box:
-            possibleValues.append(value)
-            print("possibleValues", possibleValues)
-        if len(possibleValues) == 1:
-            print("length", len(possibleValues))
-            return value 
+        log(value, "prelim value")
+        newValue = str(value)
+        log(newValue, "newValue")
+        if newValue not in row and newValue not in column and newValue not in box:
+            possibleValues.append(newValue)
+            log( possibleValues, "possibleValues")
+    if len(possibleValues) == 1:
+        log(len(possibleValues), "length")
+        log(possibleValues[0], "")
+        return possibleValues[0]
+    return '0'
 
 def take_input (puzzle):
     log(puzzle, "puzzle")
@@ -84,30 +88,49 @@ def take_input (puzzle):
             sudokuData[i].append(puzzle[f'{i}-{j}'])
             j+=1
         i+=1
-    # log(sudokuData, "organized sudokuData")
+    log(sudokuData, "organized sudokuData")
     return sudokuData  
+
+def prelimSolve(data):
+    hasNakedSingles = True
+    while hasNakedSingles:
+        edited = False
+        for i in range(9):
+            for j in range(9):
+                row = get_row(data, i)
+                log(row, "Onerow")
+                column = get_column(data,j)
+                log(column, "oneColumn")
+                box = get_box(data, i, j)
+                log(box, "oneBox")
+                log(data[i][j], "value = ")
+                if data[i][j] == '0':
+                    print(data[i][j], "value =")
+                    value = nakedSingle(row, column, box)
+                    if value != '0':
+                        edited = True
+                    print(value, "value")
+                    data[i][j]=value
+                    print("new dataSet", data[i])
+        if edited == False:
+            hasNakedSingles = False
+    return data
 
 def solve_one(data):
     dataSet = take_input(data)
-    print(dataSet, "dataSet")
-    i=0
-    for i in range(9):
-        j=0
-        for j in range(9):
-            row = get_row(dataSet, i)
-            print(row, "Onerow", i)
-            column = get_column(dataSet,j)
-            print(column, "oneColumn", j)
-            box = get_box(dataSet, i, j)
-            print(box, "oneBox", i , j)
-            print("value = ", dataSet[i][j])
-            if dataSet[i][j] == '0':
-                log(dataSet[i][j], "value =")
-                value = prelimSolve(dataSet[i][j], row, column, box)
-                log(value, "value")
-                dataSet[i][j]=value
-            j += 1
-        i+= 1
+    log(dataSet, "dataSet")
+    newDataSet = prelimSolve(dataSet)
+    print("newDataSet")
+    print(newDataSet[0])
+    print(newDataSet[1])
+    print(newDataSet[2])
+    print(newDataSet[3])
+    print(newDataSet[4])
+    print(newDataSet[5])
+    print(newDataSet[6])
+    print(newDataSet[7])
+    print(newDataSet[8])
+
     return True
 
 
