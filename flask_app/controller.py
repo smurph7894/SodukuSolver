@@ -7,12 +7,22 @@ from flask_app import solver
 def home():
         return render_template('newSudoku.html')
 
+# @app.route ('/solve-sudoku', methods=['POST'])
+# def new_sudoku():
+#         if solver.solve_one(request.form):
+#                 return redirect('/results')
+
+# @app.route('/results')
+# def solved_sudoku():
+#         results = solver.solve_one
+#         return render_template('results.html', results=results)
+
 @app.route ('/solve-sudoku', methods=['POST'])
 def new_sudoku():
-        if solver.solve_one(request.form):
+        if solver.solve_two(request.form):
                 return redirect('/results')
 
 @app.route('/results')
 def solved_sudoku():
-        results = solver.solve_one
+        results = solver.solve_two
         return render_template('results.html', results=results)
