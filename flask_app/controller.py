@@ -1,5 +1,5 @@
 from flask_app import app
-from flask import render_template, redirect, request
+from flask import render_template, redirect, request, session
 from flask_app import solver 
 
 
@@ -7,22 +7,16 @@ from flask_app import solver
 def home():
         return render_template('newSudoku.html')
 
-# @app.route ('/solve-sudoku', methods=['POST'])
-# def new_sudoku():
-#         if solver.solve_one(request.form):
-#                 return redirect('/results')
-
-# @app.route('/results')
-# def solved_sudoku():
-#         results = solver.solve_one
-#         return render_template('results.html', results=results)
-
 @app.route ('/solve-sudoku', methods=['POST'])
 def new_sudoku():
-        if solver.solve_two(request.form):
+        print(request.form)
+        data = solver.chooseSolveLevel(request.form)
+        if data:
+                session['results'] = data
                 return redirect('/results')
-
+        
 @app.route('/results')
 def solved_sudoku():
-        results = solver.solve_two
+        results = session["results"]
+        session["results"] = None
         return render_template('results.html', results=results)

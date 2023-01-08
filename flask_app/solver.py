@@ -87,8 +87,8 @@ def nakedSingle (row, column, box):
         log("length", len(possibleValues))
         log("", possibleValues[0])
         return [possibleValues[0], possibleValues]
-    # switch from original return to possibly return array or '0' and array
-    return ['0', possibleValues]
+    # switch from original return to possibly return array or '' and array
+    return ['', possibleValues]
 
 def take_input (puzzle):
     # creates soduku in 2d array
@@ -108,7 +108,7 @@ def take_input (puzzle):
 def findFirstEmptyCell(data):
     for i in range(9):
         for j in range(9):
-            if data[i][j] == '0':
+            if data[i][j] == '':
                 row = get_row(data, i)
                 log("Onerow", row)
                 column = get_column(data,j)
@@ -147,8 +147,8 @@ def prelimSolve(data):
         for i in range(9):
             for j in range(9):
                 log("value = ", data[i][j])
-                # if a index location is '0' run through to compare possible inputs in nakedSingle using collected compariative data
-                if data[i][j] == '0':
+                # if a index location is '' run through to compare possible inputs in nakedSingle using collected compariative data
+                if data[i][j] == '':
                     #collects row, column, and box data by indexes to input into nakedSingle below
                     row = get_row(data, i)
                     log("Onerow", row)
@@ -160,7 +160,7 @@ def prelimSolve(data):
                     value = nakedSingle(row, column, box)
                     if len(value[1]) == 0:
                         return None
-                    if value[0] != '0':
+                    if value[0] != '':
                         edited = True
                     print("value", value)
                     data[i][j]=value[0]
@@ -168,6 +168,16 @@ def prelimSolve(data):
         if edited == False:
             hasNakedSingles = False
     return data
+
+def chooseSolveLevel(data):
+    if data['solveLevel'] == 'easy':
+        print("easy")
+        solveOneData = solve_one(data)
+        return solveOneData
+    elif data['solveLevel'] == 'hard':
+        print("hard")
+        solveTwoData = solve_two(data)
+        return solveTwoData
 
 def solve_one(data):
     dataSet = take_input(data)
@@ -183,8 +193,7 @@ def solve_one(data):
     print(newDataSet[6])
     print(newDataSet[7])
     print(newDataSet[8])
-
-    return True
+    return newDataSet
 
 
 # compare all vertical to horizontal for no repeating numbers
@@ -201,5 +210,5 @@ def solve_two(data):
     print(newDataSet[6])
     print(newDataSet[7])
     print(newDataSet[8])
-    return True
+    return newDataSet
 
