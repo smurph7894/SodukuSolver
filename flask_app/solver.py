@@ -1,4 +1,3 @@
-from flask_app import app
 from copy import deepcopy
 
 DEBUG = False
@@ -120,20 +119,22 @@ def findFirstEmptyCell(data):
                 return [i, j, possibleValues[1]]
     return None
 
-
-
 def guessSolve(data):
     newDataSet = prelimSolve(data)
+        # done and failed
     if newDataSet == None:
         return None
     firstEmptyCellInfo = findFirstEmptyCell(newDataSet)
+    # done and successful
     if firstEmptyCellInfo == None:
         return newDataSet
+    # happens if not done
     for value in firstEmptyCellInfo[2]:
         dataSetCopy = deepcopy(newDataSet)
         dataSetCopy[firstEmptyCellInfo[0]][firstEmptyCellInfo[1]] = value
         solvedDataSet = guessSolve(dataSetCopy)
-        # sovledDataSet if exits - solution made - if None - no solution found
+        # will exist if a successful solution is created (is not None), we 
+        # will then return the solution and go back to for loop for next possible value
         if solvedDataSet is not None:
             return solvedDataSet
     return None
